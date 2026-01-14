@@ -2,38 +2,113 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Buyer Dashboard</title>
+<title>RiceTrade | Buyer Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body { font-family: Arial; background: #f4f6f8; }
-.container {
-    max-width: 600px;
-    background: white;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f6f7f9;
+    color: #333;
 }
-h2 { text-align: center; color: #2e7d32; }
 
-label { font-weight: bold; display: block; margin-top: 15px; }
+/* HEADER */
+header {
+    background: #1b5e20;
+    color: #fff;
+    padding: 18px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+header button {
+    background: #ffeb3b;
+    color: #1b5e20;
+    border: none;
+    padding: 10px 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+header button:hover {
+    background: #fdd835;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* TITLES */
+.container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1b5e20;
+}
+
+/* FORM */
+.form-group {
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
 select, input {
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-}
-.radio-group { margin-top: 10px; }
-.city-select { display: none; }
-
-button {
-    width: 100%;
-    margin-top: 20px;
     padding: 12px;
-    background: #2e7d32;
-    color: white;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+/* RADIO */
+.radio-group {
+    display: flex;
+    gap: 25px;
+    margin-top: 10px;
+}
+
+/* CITY */
+#cityBlock {
+    display: none;
+    margin-top: 15px;
+}
+
+/* BUTTON */
+.search-btn {
+    width: 100%;
+    margin-top: 30px;
+    padding: 14px;
+    font-size: 18px;
+    background: #1b5e20;
+    color: #fff;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.search-btn:hover {
+    background: #104015;
+}
+
+/* INFO BOX */
+.info {
+    background: #e8f5e9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-size: 15px;
 }
 </style>
 
@@ -41,57 +116,81 @@ button {
 function updateProductCode() {
     const product = document.getElementById("product").value;
     const variety = document.getElementById("variety").value;
+
     if (product && variety) {
-        document.getElementById("code").value =
+        document.getElementById("productCode").value =
             product.substring(0,2).toUpperCase() +
             variety.substring(0,2).toUpperCase() +
             "-001";
+    } else {
+        document.getElementById("productCode").value = "";
     }
 }
 
-function toggleCity(value) {
-    document.getElementById("cities").style.display =
-        value === 'specific' ? 'block' : 'none';
+function toggleCity(option) {
+    document.getElementById("cityBlock").style.display =
+        option === 'city' ? 'block' : 'none';
 }
 </script>
+
 </head>
 
 <body>
 
+<!-- HEADER -->
+<header>
+    <h1>RiceTrade – Buyer Portal</h1>
+    <button onclick="location.href='index.html'">Home</button>
+</header>
+
+<!-- MAIN -->
 <div class="container">
-<h2>Buyer Purchase Flow</h2>
 
-<!-- Product -->
-<label>Select Product</label>
-<select id="product" onchange="updateProductCode()">
-    <option value="">-- Select --</option>
-    <option value="Rice">Rice</option>
-    <option value="Potato">Potato</option>
-    <option value="Kiwi">Kiwi</option>
-</select>
+<h2>Search & Buy Products</h2>
 
-<!-- Variety -->
-<label>Product Variety</label>
-<select id="variety" onchange="updateProductCode()">
-    <option value="">-- Select --</option>
-    <option value="Basmati">Basmati</option>
-    <option value="Normal">Normal</option>
-</select>
-
-<!-- Product Code -->
-<label>Product Code</label>
-<input type="text" id="code" placeholder="Auto Generated" readonly>
-
-<!-- Region Selection -->
-<label>Region Preference</label>
-<div class="radio-group">
-    <input type="radio" name="region" checked onclick="toggleCity('all')"> All Regions
-    <br>
-    <input type="radio" name="region" onclick="toggleCity('specific')"> Select Specific Cities
+<div class="info">
+    Select your product preferences, compare sellers across regions,
+    and negotiate to get the best deal.
 </div>
 
-<!-- Cities -->
-<div class="city-select" id="cities">
+<!-- PRODUCT -->
+<div class="form-group">
+    <label>Select Product</label>
+    <select id="product" onchange="updateProductCode()">
+        <option value="">-- Select Product --</option>
+        <option>Rice</option>
+        <option>Potato</option>
+        <option>Kiwi</option>
+    </select>
+</div>
+
+<!-- VARIETY -->
+<div class="form-group">
+    <label>Select Product Variety</label>
+    <select id="variety" onchange="updateProductCode()">
+        <option value="">-- Select Variety --</option>
+        <option>Basmati</option>
+        <option>Normal</option>
+    </select>
+</div>
+
+<!-- CODE -->
+<div class="form-group">
+    <label>Product Code</label>
+    <input type="text" id="productCode" placeholder="Auto Generated" readonly>
+</div>
+
+<!-- REGION -->
+<div class="form-group">
+    <label>Region Preference</label>
+    <div class="radio-group">
+        <label><input type="radio" name="region" checked onclick="toggleCity('all')"> All Regions</label>
+        <label><input type="radio" name="region" onclick="toggleCity('city')"> Select City</label>
+    </div>
+</div>
+
+<!-- CITY -->
+<div class="form-group" id="cityBlock">
     <label>Select City</label>
     <select>
         <option>Delhi</option>
@@ -102,7 +201,7 @@ function toggleCity(value) {
     </select>
 </div>
 
-<button>Search Sellers</button>
+<button class="search-btn">Search Sellers</button>
 
 </div>
 
