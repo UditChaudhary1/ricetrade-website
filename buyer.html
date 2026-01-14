@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Buyer Dashboard</title>
+
+<style>
+body { font-family: Arial; background: #f4f6f8; }
+.container {
+    max-width: 600px;
+    background: white;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h2 { text-align: center; color: #2e7d32; }
+
+label { font-weight: bold; display: block; margin-top: 15px; }
+select, input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+.radio-group { margin-top: 10px; }
+.city-select { display: none; }
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+</style>
+
+<script>
+function updateProductCode() {
+    const product = document.getElementById("product").value;
+    const variety = document.getElementById("variety").value;
+    if (product && variety) {
+        document.getElementById("code").value =
+            product.substring(0,2).toUpperCase() +
+            variety.substring(0,2).toUpperCase() +
+            "-001";
+    }
+}
+
+function toggleCity(value) {
+    document.getElementById("cities").style.display =
+        value === 'specific' ? 'block' : 'none';
+}
+</script>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Buyer Purchase Flow</h2>
+
+<!-- Product -->
+<label>Select Product</label>
+<select id="product" onchange="updateProductCode()">
+    <option value="">-- Select --</option>
+    <option value="Rice">Rice</option>
+    <option value="Potato">Potato</option>
+    <option value="Kiwi">Kiwi</option>
+</select>
+
+<!-- Variety -->
+<label>Product Variety</label>
+<select id="variety" onchange="updateProductCode()">
+    <option value="">-- Select --</option>
+    <option value="Basmati">Basmati</option>
+    <option value="Normal">Normal</option>
+</select>
+
+<!-- Product Code -->
+<label>Product Code</label>
+<input type="text" id="code" placeholder="Auto Generated" readonly>
+
+<!-- Region Selection -->
+<label>Region Preference</label>
+<div class="radio-group">
+    <input type="radio" name="region" checked onclick="toggleCity('all')"> All Regions
+    <br>
+    <input type="radio" name="region" onclick="toggleCity('specific')"> Select Specific Cities
+</div>
+
+<!-- Cities -->
+<div class="city-select" id="cities">
+    <label>Select City</label>
+    <select>
+        <option>Delhi</option>
+        <option>Mumbai</option>
+        <option>Pune</option>
+        <option>Bangalore</option>
+        <option>Chennai</option>
+    </select>
+</div>
+
+<button>Search Sellers</button>
+
+</div>
+
+</body>
+</html>
