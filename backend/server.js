@@ -1,6 +1,10 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
+
+// ✅ ENABLE CORS
+app.use(cors());
 app.use(express.json());
 
 // Temporary in-memory storage
@@ -17,7 +21,8 @@ app.post("/stocks", (req, res) => {
         quantity: req.body.quantity,
         unit: req.body.unit,
         price: req.body.price,
-        city: req.body.city
+        city: req.body.city,
+        description: req.body.description
     };
 
     stocks.push(stock);
@@ -37,5 +42,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
 });
-
-
