@@ -188,9 +188,32 @@ textarea {
     <textarea rows="4" placeholder="Quality, grade, moisture %, packaging details, etc."></textarea>
 </div>
 
-<button class="post-btn">Post Stock</button>
+<button class="post-btn" onclick="postStock"()>Post Stock</button>
 
 </div>
 
+    <script>
+function postStock() {
+    const stockData = {
+        product: document.querySelectorAll("select")[0].value,
+        variety: document.querySelectorAll("select")[1].value,
+        quantity: document.querySelectorAll("input[type='number']")[0].value,
+        unit: document.querySelectorAll("select")[2].value,
+        price: document.querySelectorAll("input[type='number']")[1].value,
+        city: document.querySelectorAll("select")[3].value
+    };
+
+    fetch("https://ricetrade-website-1.onrender.com/stocks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(stockData)
+    })
+    .then(res => res.json())
+    .then(() => alert("Stock posted successfully!"))
+    .catch(() => alert("Error posting stock"));
+}
+</script>
+
+    
 </body>
 </html>
