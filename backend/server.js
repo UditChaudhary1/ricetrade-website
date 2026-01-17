@@ -3,15 +3,14 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ ENABLE CORS
 app.use(cors());
 app.use(express.json());
 
-// Temporary in-memory storage
+// In-memory storage (Phase 1)
 let stocks = [];
 
 /**
- * Seller posts stock
+ * SELLER POSTS STOCK
  */
 app.post("/stocks", (req, res) => {
     const stock = {
@@ -26,17 +25,44 @@ app.post("/stocks", (req, res) => {
     };
 
     stocks.push(stock);
-    res.json({ message: "Stock added successfully", stock });
+
+    res.json({
+        message: "Stock added successfully",
+        stock
+    });
+ Rockstar
 });
 
 /**
- * Buyer fetches stocks
+ * BUYER FETCHES STOCKS (WITH FILTERING)
  */
 app.get("/stocks", (req, res) => {
-    res.json(stocks);
+    const { product, variety, city } = req.query;
+
+    let filteredStocks = stocks;
+
+    if (product) {
+        filteredStocks = filteredStocks.filter(
+            s => s.product === product
+        );
+    }
+
+    if (variety) {
+        filteredStocks = filteredStocks.filter(
+            s => s.variety === variety
+        );
+    }
+
+    if (city && city !== "All") {
+        filteredStocks = filteredStocks.filter(
+            s => s.city === city
+        );
+    }
+
+    res.json(filteredStocks);
 });
 
-// IMPORTANT: Use Render provided PORT
+// IMPORTANT: Render dynamic port
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
