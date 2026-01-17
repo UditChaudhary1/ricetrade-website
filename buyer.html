@@ -206,5 +206,49 @@ function toggleCity(option) {
 
 </div>
 
+    <script>
+function searchSellers() {
+    const product = document.getElementById("product").value;
+    const variety = document.getElementById("variety").value;
+    const city = document.getElementById("city").value;
+
+    let url = `https://ricetrade-website-1.onrender.com/stocks?product=${product}&variety=${variety}&city=${city}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => displayResults(data))
+        .catch(() => alert("Error fetching sellers"));
+}
+
+function displayResults(stocks) {
+    const resultDiv = document.getElementById("results");
+    resultDiv.innerHTML = "";
+
+    if (stocks.length === 0) {
+        resultDiv.innerHTML = "<p>No matching sellers found.</p>";
+        return;
+    }
+
+    stocks.forEach(stock => {
+        const card = document.createElement("div");
+        card.className = "stock-card";
+
+        card.innerHTML = `
+            <h3>${stock.product} - ${stock.variety}</h3>
+            <p><b>Quantity:</b> ${stock.quantity} ${stock.unit}</p>
+            <p><b>Price:</b> ₹${stock.price}</p>
+            <p><b>City:</b> ${stock.city}</p>
+            <button>Request / Negotiate</button>
+        `;
+
+        resultDiv.appendChild(card);
+    });
+}
+</script>
+
+    <div id="results"></div>
+
+
+    
 </body>
 </html>
