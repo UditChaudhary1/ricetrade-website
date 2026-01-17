@@ -206,22 +206,29 @@ function toggleCity(option) {
 
 </div>
 
-   <script>
+ <script>
 function searchSellers() {
-    const productEl = document.getElementById("product");
-    const varietyEl = document.getElementById("variety");
-    const cityEl = document.getElementById("city");
+    const product = document.getElementById("product").value;
+    const variety = document.getElementById("variety").value;
 
-    if (!productEl || !varietyEl || !cityEl) {
-        alert("Buyer filters are missing IDs");
-        return;
+    // Handle region selection
+    let city = "All";
+    const cityRadio = document.querySelector('input[name="region"]:checked');
+
+    if (cityRadio && cityRadio.value === "city") {
+        city = document.getElementById("city").value;
     }
 
-    const product = productEl.value;
-    const variety = varietyEl.value;
-    const city = cityEl.value;
+    let url = "https://ricetrade-website-1.onrender.com/stocks";
 
-    const url = `https://ricetrade-website-1.onrender.com/stocks?product=${product}&variety=${variety}&city=${city}`;
+    const params = [];
+    if (product) params.push(`product=${product}`);
+    if (variety) params.push(`variety=${variety}`);
+    if (city !== "All") params.push(`city=${city}`);
+
+    if (params.length > 0) {
+        url += "?" + params.join("&");
+    }
 
     fetch(url)
         .then(res => res.json())
@@ -231,32 +238,8 @@ function searchSellers() {
             alert("Error fetching sellers");
         });
 }
-
-function displayResults(stocks) {
-    const resultDiv = document.getElementById("results");
-    resultDiv.innerHTML = "";
-
-    if (stocks.length === 0) {
-        resultDiv.innerHTML = "<p>No matching sellers found.</p>";
-        return;
-    }
-
-    stocks.forEach(stock => {
-        const div = document.createElement("div");
-        div.className = "stock-card";
-
-        div.innerHTML = `
-            <h3>${stock.product} - ${stock.variety}</h3>
-            <p>Quantity: ${stock.quantity} ${stock.unit}</p>
-            <p>Price: ₹${stock.price}</p>
-            <p>City: ${stock.city}</p>
-            <button>Request / Negotiate</button>
-        `;
-
-        resultDiv.appendChild(div);
-    });
-}
 </script>
+
 
 
     <div id="results"></div>
